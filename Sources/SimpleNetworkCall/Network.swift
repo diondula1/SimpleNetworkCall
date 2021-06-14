@@ -10,7 +10,7 @@ import UIKit
 public class Network: NSObject {
     public static let shared = Network()
     
-    
+    //Nil Body in to Get
     public func get<T : Decodable>(urlString: String,
                                   completion: @escaping (Result<T, Error>) -> Void) {
         let nilInt: Int? = nil
@@ -22,11 +22,12 @@ public class Network: NSObject {
                                   completion: @escaping (Result<T, Error>) -> Void) {
         fetchData(body: body, httpMethodType: HtppMethodType.POST, urlString: urlString, completion: completion)
     }
-    
+    //Nil Body in to Delete
     public func delete<T : Decodable, Y : Encodable>(body: Y? = nil,
                                                      urlString: String,
                                                      completion: @escaping (Result<T, Error>) -> Void) {
-        fetchData(body: body, httpMethodType: HtppMethodType.DELETE, urlString: urlString, completion: completion)
+        let nilInt: Int? = nil
+        fetchData(body: nilInt, httpMethodType: HtppMethodType.DELETE, urlString: urlString, completion: completion)
     }
     
     private func fetchData<T : Decodable, Y : Encodable>(body: Y? = nil,
