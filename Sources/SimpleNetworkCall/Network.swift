@@ -10,7 +10,7 @@ import UIKit
 public class Network: NSObject {
     public static let shared = Network()
     
-    func fetchData<T : Decodable, Y : Encodable>(body: Y? = nil,
+    public func fetchData<T : Decodable, Y : Encodable>(body: Y? = nil,
                                   httpMethodType: HtppMethodType,
                                   queryStringParamters: [String: String]?,
                                   urlString: String,
@@ -76,14 +76,14 @@ public class Network: NSObject {
     }
     
     
-    enum HtppMethodType: String {
+    public enum HtppMethodType: String {
         case Post = "POST"
         case Get = "GET"
         case Delete = "DELETE"
     }
     
     
-    public init() {}
+    public override init() {}
 }
 
 #endif
