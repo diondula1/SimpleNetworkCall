@@ -10,13 +10,31 @@ import UIKit
 public class Network: NSObject {
     public static let shared = Network()
     
-    public func fetchData<T : Decodable, Y : Encodable>(body: Y? = nil,
+    
+    public func get<T : Decodable>(urlString: String,
+                                  completion: @escaping (Result<T, Error>) -> Void) {
+        let nilInt: Int? = nil
+        fetchData(body:nilInt,httpMethodType: HtppMethodType.GET, urlString: urlString, completion: completion)
+    }
+ 
+    public func post<T : Decodable, Y : Encodable>(body: Y? = nil,
+                                  urlString: String,
+                                  completion: @escaping (Result<T, Error>) -> Void) {
+        fetchData(body: body, httpMethodType: HtppMethodType.POST, urlString: urlString, completion: completion)
+    }
+    
+    public func delete<T : Decodable, Y : Encodable>(body: Y? = nil,
+                                                     urlString: String,
+                                                     completion: @escaping (Result<T, Error>) -> Void) {
+        fetchData(body: body, httpMethodType: HtppMethodType.DELETE, urlString: urlString, completion: completion)
+    }
+    
+    private func fetchData<T : Decodable, Y : Encodable>(body: Y? = nil,
                                   httpMethodType: HtppMethodType,
                                   urlString: String,
                                   completion: @escaping (Result<T, Error>) -> Void) {
         
-        var url = URL(string: urlString)!
-      
+        let url = URL(string: urlString)!
         
         var request = getRequest(body: body, url: url)
         request.httpMethod = httpMethodType.rawValue
@@ -42,39 +60,6 @@ public class Network: NSObject {
         }.resume()
         
     }
-    
-    public func fetchData<T : Decodable>(httpMethodType: HtppMethodType,
-                                  urlString: String,
-                                  completion: @escaping (Result<T, Error>) -> Void) {
-        
-        var url = URL(string: urlString)!
-
-        let nilInt: Int? = nil
-        var request = getRequest(body: nilInt, url: url)
-        request.httpMethod = httpMethodType.rawValue
-        
-        URLSession.shared.dataTask(with: request) { (data, response, err) in
-            if let err = err {
-                completion(.failure(err))
-            }
-            
-            guard let data = data else {
-                return
-            }
-            
-            do{
-                let loginResult = try JSONDecoder().decode(T.self, from: data)
-                
-                DispatchQueue.main.sync {
-                    completion(.success(loginResult))
-                }
-            }catch {
-                completion(.failure(error))
-            }
-        }.resume()
-        
-    }
-    
     
     private func getRequest<T: Encodable>(body: T?,url: URL) -> URLRequest {
         var request = URLRequest(url: url)
@@ -106,9 +91,9 @@ public class Network: NSObject {
     
     
     public enum HtppMethodType: String {
-        case Post = "POST"
-        case Get = "GET"
-        case Delete = "DELETE"
+        case POST = "POST"
+        case GET = "GET"
+        case DELETE = "DELETE"
     }
     
     
