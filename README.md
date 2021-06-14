@@ -26,7 +26,8 @@ This is GET Method without Body Parameters
                         //Data Return Successfully
                         break
                     case .failure(let error):
-                        self?.networkChanges.value = .error(message: error.localizedDescription)
+                       //Error Message
+                        break
                     }
                 }
         
@@ -45,7 +46,8 @@ This is POST Method with Body Parameters
                         //Data Return Successfully
                         break
                     case .failure(let error):
-                        self?.networkChanges.value = .error(message: error.localizedDescription)
+                        //Error Message
+                        break
                     }
                 }
         
