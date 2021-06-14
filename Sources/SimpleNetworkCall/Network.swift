@@ -8,7 +8,7 @@
 import UIKit
 
 public class Network: NSObject {
-    static let shared = Network()
+    public static let shared = Network()
     
     func fetchData<T : Decodable, Y : Encodable>(body: Y? = nil,
                                   httpMethodType: HtppMethodType,
