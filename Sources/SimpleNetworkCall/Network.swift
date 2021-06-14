@@ -23,8 +23,7 @@ public class Network: NSObject {
         fetchData(body: body, httpMethodType: HtppMethodType.POST, urlString: urlString, completion: completion)
     }
     //Nil Body in to Delete
-    public func delete<T : Decodable, Y : Encodable>(body: Y? = nil,
-                                                     urlString: String,
+    public func delete<T : Decodable, Y : Encodable>(urlString: String,
                                                      completion: @escaping (Result<T, Error>) -> Void) {
         let nilInt: Int? = nil
         fetchData(body: nilInt, httpMethodType: HtppMethodType.DELETE, urlString: urlString, completion: completion)
