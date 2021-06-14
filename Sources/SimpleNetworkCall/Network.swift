@@ -4,7 +4,7 @@
 //
 //  Created by Dion Dula on 1/12/21.
 //
-#if canImport(UIKit)
+#if os(iOS) || os(tvOS)
 import UIKit
 
 class Network: NSObject {
