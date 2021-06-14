@@ -7,7 +7,7 @@
 #if os(iOS) || os(tvOS)
 import UIKit
 
-class Network: NSObject {
+public class Network: NSObject {
     static let shared = Network()
     
     func fetchData<T : Decodable, Y : Encodable>(body: Y? = nil,
