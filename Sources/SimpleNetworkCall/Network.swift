@@ -82,6 +82,8 @@ public class Network: NSObject {
         case Delete = "DELETE"
     }
     
+    
+    public init() {}
 }
 
 #endif
