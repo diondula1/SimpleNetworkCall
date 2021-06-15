@@ -49,10 +49,10 @@ public class Network: NSObject {
             }
             
             do{
-                let loginResult = try JSONDecoder().decode(T.self, from: data)
+                let returnResult = try JSONDecoder().decode(T.self, from: data)
                 
                 DispatchQueue.main.sync {
-                    completion(.success(loginResult))
+                    completion(.success(returnResult))
                 }
             }catch {
                 completion(.failure(error))
