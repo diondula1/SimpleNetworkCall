@@ -19,8 +19,8 @@ public class Network: NSObject {
     }
     
     public func post<T : Decodable, Y : Encodable>(body: Y? = nil,
-                                                   headerParameters: [String : String] = [:],
                                                    urlString: String,
+                                                   headerParameters: [String : String] = [:],
                                                    completion: @escaping (Result<T, Error>) -> Void) {
         fetchData(body: body, httpMethodType: HtppMethodType.POST, urlString: urlString, headerParameters: headerParameters,completion: completion)
     }
