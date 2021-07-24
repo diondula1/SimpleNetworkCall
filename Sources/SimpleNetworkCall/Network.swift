@@ -12,31 +12,35 @@ public class Network: NSObject {
     
     //Nil Body in to Get
     public func get<T : Decodable>(urlString: String,
-                                  completion: @escaping (Result<T, Error>) -> Void) {
+                                   headerParameters: [String : String] = [:],
+                                   completion: @escaping (Result<T, Error>) -> Void) {
         let nilInt: Int? = nil
-        fetchData(body:nilInt,httpMethodType: HtppMethodType.GET, urlString: urlString, completion: completion)
+        fetchData(body:nilInt,httpMethodType: HtppMethodType.GET, urlString: urlString,headerParameters: headerParameters,completion: completion)
     }
- 
+    
     public func post<T : Decodable, Y : Encodable>(body: Y? = nil,
-                                  urlString: String,
-                                  completion: @escaping (Result<T, Error>) -> Void) {
-        fetchData(body: body, httpMethodType: HtppMethodType.POST, urlString: urlString, completion: completion)
+                                                   headerParameters: [String : String] = [:],
+                                                   urlString: String,
+                                                   completion: @escaping (Result<T, Error>) -> Void) {
+        fetchData(body: body, httpMethodType: HtppMethodType.POST, urlString: urlString, headerParameters: headerParameters,completion: completion)
     }
     //Nil Body in to Delete
     public func delete<T : Decodable>(urlString: String,
-                                                     completion: @escaping (Result<T, Error>) -> Void) {
+                                      headerParameters: [String : String] = [:],
+                                      completion: @escaping (Result<T, Error>) -> Void) {
         let nilInt: Int? = nil
-        fetchData(body: nilInt, httpMethodType: HtppMethodType.DELETE, urlString: urlString, completion: completion)
+        fetchData(body: nilInt, httpMethodType: HtppMethodType.DELETE, urlString: urlString, headerParameters: headerParameters,completion: completion)
     }
     
     private func fetchData<T : Decodable, Y : Encodable>(body: Y? = nil,
-                                  httpMethodType: HtppMethodType,
-                                  urlString: String,
-                                  completion: @escaping (Result<T, Error>) -> Void) {
+                                                         httpMethodType: HtppMethodType,
+                                                         urlString: String,
+                                                         headerParameters: [String : String] = [:],
+                                                         completion: @escaping (Result<T, Error>) -> Void) {
         
         let url = URL(string: urlString)!
         
-        var request = getRequest(body: body, url: url)
+        var request = getRequest(body: body, url: url,headerParameters: headerParameters)
         request.httpMethod = httpMethodType.rawValue
         
         URLSession.shared.dataTask(with: request) { (data, response, err) in
@@ -61,10 +65,13 @@ public class Network: NSObject {
         
     }
     
-    private func getRequest<T: Encodable>(body: T?,url: URL) -> URLRequest {
+    private func getRequest<T: Encodable>(body: T?,url: URL,headerParameters: [String : String] = [:]) -> URLRequest {
         var request = URLRequest(url: url)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-
+        for headerParameter in headerParameters {
+            request.addValue(headerParameter.value, forHTTPHeaderField: headerParameter.key)
+        }
+        
         if let body = body{
             do {
                 let jsonData = try JSONEncoder().encode(body)
@@ -73,7 +80,7 @@ public class Network: NSObject {
                 print(error)
             }
             
-         
+            
         }
         
         return request
